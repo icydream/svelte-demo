@@ -1,0 +1,12 @@
+$ Element directives
+> As well as attributes, elements can have directives, which control the element's behaviour in some way.
+
+$ slot和parent之間的溝通
+> 使用屬性(props)方式
+> parent使用let $屬性名
+> <parent let:item={item}>
+    <slot item={item}></slot>
+  </parent>
+> <parent let:item>
+    <slot {item}></slot>
+  </parent>
