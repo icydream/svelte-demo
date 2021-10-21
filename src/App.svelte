@@ -2,16 +2,20 @@
 	import Notify from './component/Notify.svelte';
 	import Loader from './component/Loader.svelte';
 	import Prompt from './component/Prompt.svelte';
-	import './css/spinkit.min.css';
+	import {invokeAPI} from './utility/invokeAPI.js';
+	import {onMount} from 'svelte';
 	
 	let visible = false;
 	let type = 'success';
 	let message;
 	let loaderShow = false;
 	let promptShow = false;
-	let btnCancel;
-	let btnConfirm;
-	let inputText;
+	let inputValues;
+
+	onMount(() => {
+		invokeAPI('https://datacenter.taichung.gov.tw/swagger/OpenData/8ff7d524-9542-49b4-bed1-af7706813e9b')
+			.then(resp => resp.success(console.log).fail(console.error));
+	});
 
 	function doNotify(event) {
 		type = event.target.dataset.type;
@@ -35,30 +39,16 @@
 	<div slot="fail" class="fail">{message}</div>
 </Notify>
 
-<Loader bind:visible={loaderShow} on:click={function(event) {loaderShow = !event.detail.visible}}>
-	<div class="sk-center sk-chase">
-		<div class="sk-chase-dot"></div>
-		<div class="sk-chase-dot"></div>
-		<div class="sk-chase-dot"></div>
-		<div class="sk-chase-dot"></div>
-		<div class="sk-chase-dot"></div>
-		<div class="sk-chase-dot"></div>
-	</div>
-</Loader>
+<Loader bind:visible={loaderShow}></Loader>
 
 <Prompt
-	bind:visible={promptShow}
-	cancel={() => btnCancel}
-	confirm={() => btnConfirm}
-	values={{inputText}}
-	on:cancel={event => alert('cancel')}
-	on:confirm={event => alert(`輸入的是${event.detail.values.inputText}`)}>
+	bind:visible={promptShow}>
 	<div>
 		<p>Hello!</p>
-		<input type="text" bind:value={inputText}>
+		<input type="text" bind:value={inputValues}>
 		<div>
-			<button bind:this={btnCancel}>取消</button>
-			<button bind:this={btnConfirm}>確定</button>
+			<button on:click|preventDefault={event => promptShow = !promptShow}>取消</button>
+			<button on:click|preventDefault={event => alert(`輸入的是: ${inputValues}`)}>確定</button>
 		</div>
 	</div>
 </Prompt>
