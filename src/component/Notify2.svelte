@@ -6,11 +6,9 @@
     export let visible = false;
 </script>
 
-<Notify>
-    <Notify type={type} bind:visible={visible}>
-		<div slot="success" class={type}>{message}</div>
-        <div slot="fail" class={type}>{message}</div>
-    </Notify>
+<Notify type={type} bind:visible={visible}>
+	<div slot="success" class={type}>{message}</div>
+	<div slot="fail" class={type}>{message}</div>
 </Notify>
 
 <style>
