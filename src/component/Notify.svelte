@@ -17,10 +17,8 @@
     <div transition:fade>
         {#if type === 'success'}
             <slot name="success"></slot>
-        {:else}
-            {#if type === 'fail'}
-                <slot name="fail"></slot>
-            {/if}
+        {:else if type === 'fail'}
+            <slot name="fail"></slot>
         {/if}
     </div>
 {/if}
